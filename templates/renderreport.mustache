@@ -1,0 +1,7 @@
+{{> block_logreport/charttabs }}
+{{#js}}
+    require(['jquery','jqueryui'], function($) {
+        var container = $("#{{ uniqid }}-tab-container");
+        $("#{{ uniqid }}-tab-container").tabs();
+    });
+{{/js}}

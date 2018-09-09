@@ -1,0 +1,24 @@
+<div id="{{ uniqid }}-tab-container">
+    <ul role="tablist" class="nav nav-tabs">
+		{{# tabs }}
+			<li role="tab"
+					data-target="{{ uniqid }}-{{ id }}"
+					data-selected-class="active"
+					aria-controls="{{ uniqid }}-{{ id }}"
+					aria-selected="false" tabindex="-1">
+
+				<a href="#{{ uniqid }}-{{ id }}">{{{ name }}}</a>
+			</li>
+		{{/ tabs }}
+	</ul>
+    <div class="tab-content">
+		{{# tabs }}
+			<div role="tabpanel"
+				class="tab-pane"
+				id="{{ uniqid }}-{{ id }}">
+
+				{{{ content }}}
+			</div>
+		{{/ tabs }}
+	</div>
+</div>

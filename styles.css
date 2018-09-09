@@ -1,0 +1,13 @@
+.chart-area {
+    width:622px;
+    height: 350px;
+}
+#viewreport{
+    float: right;
+}
+form.logselecform {
+    margin-bottom: 10px;
+}
+.dataTables_length select {
+    padding: 5px;
+}
