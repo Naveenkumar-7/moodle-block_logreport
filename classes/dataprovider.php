@@ -164,7 +164,7 @@ class dataprovider extends report_log_table_log {
 
     public function get_hits($duration = 'weekly') {
         global $DB;
-        $secondcolumn = ", COUNT(DISTINCT userid) AS 'Unique User Logins'";
+        $secondcolumn = ", COUNT(userid) AS 'Unique User Logins'";
         switch ($duration) {
             case 'hourly':
                 $groupingsql = " GROUP BY DATE_FORMAT(FROM_UNIXTIME(timecreated), '%H') 
