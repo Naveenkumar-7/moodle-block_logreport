@@ -52,22 +52,8 @@ $PAGE->requires->js_call_amd('block_logreport/logreport', 'InitDatatable');
 echo $OUTPUT->header();
 $output = $PAGE->get_renderer('block_logreport');
 
-$tabsdata = (new \block_logreport\dataprovider)->generate_graphdata();
-foreach ($tabsdata as $key => $tab) {
-    $chart = new \core\chart_line();
-    $series = new \core\chart_series('Number of hits', array_values($tab));
-    $chart->add_series($series);
-    $chart->set_labels(array_keys($tab));
-    $tabs[] = ['id' => $key,
-               'name' => get_string($key, 'block_logreport'),
-               'content' => html_writer::tag('div', $output->render_chart($chart, false),
-                                             ['class' => 'blocktimeline'])];
-}
+echo $output->charts();
 $reportlog = new report_log_renderable('logstore_standard', 1);
-$data = ['tabs' => $tabs];
-$renderable = new \block_logreport\output\renderreport($data);
-
-echo $output->render($renderable);
 echo $output->report_selector_form($reportlog);
 echo $output->render_from_template('block_logreport/reporttable', $context);
 echo $OUTPUT->footer();

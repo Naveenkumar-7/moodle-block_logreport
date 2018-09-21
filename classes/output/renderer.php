@@ -166,4 +166,23 @@ class renderer extends plugin_renderer_base {
         $output .= html_writer::end_tag('form');
         return $output;
     }
+    public function charts(){
+        global $CFG;
+        if($CFG->dbtype == 'mysqli'){
+            $tabsdata = (new \block_logreport\dataprovider)->generate_graphdata();
+            foreach ($tabsdata as $key => $tab) {
+                $chart = new \core\chart_line();
+                $series = new \core\chart_series('Number of hits', array_values($tab));
+                $chart->add_series($series);
+                $chart->set_labels(array_keys($tab));
+                $tabs[] = ['id' => $key,
+                           'name' => get_string($key, 'block_logreport'),
+                           'content' => html_writer::tag('div', $this->render_chart($chart, false),
+                                                         ['class' => 'blocktimeline'])];
+            }
+            $data = ['tabs' => $tabs];
+            $renderable = new \block_logreport\output\renderreport($data);
+            return $this->render($renderable);
+        }
+    }
 }
