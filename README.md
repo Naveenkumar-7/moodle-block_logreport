@@ -8,6 +8,7 @@ This plugin available as MOODLE block.
 This plugin will make available exisitng log report with easy and quick navigation, without refreshing the page including filters and pagination.
 
 - Hourly, Daily and Monthly hits count of the application.
+  Notice: Only for MySQL applications.
 - Ajax based pagination and filters.
 - Quick selection of the filters from dropdown using select2.
 
