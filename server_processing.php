@@ -49,6 +49,7 @@ $search = optional_param('search[value]', '', PARAM_RAW);
 $course = null;
 if ($id) {
     $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+    require_login($course);
 } else {
     require_login();
 }
