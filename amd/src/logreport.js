@@ -67,7 +67,6 @@
  			 */
  			
  			$(FILTER.COURSE).on("change", function(e) {
-	          $(FILTER.USER).find('option').not(':first').remove();
 			  $(FILTER.MODULE).find('option').not(':first').remove();
 			  $(FILTER.MODULE).find('optgroup').remove();
 			  /**
@@ -81,8 +80,7 @@
                 	$.ajax({
 					  url: M.cfg.wwwroot + "/blocks/logreport/ajax.php?courseid="+ courseid
 					}).done(function(data) {
-					  console.log(data);
-					  var response = JSON.parse(data);
+					  var response = data;
 					 /*==========================================================================
 					 =            Course related activities selection with optgroups            =
 					 ==========================================================================*/
@@ -104,17 +102,9 @@
 					  	});
 					  }
 					  /*=====  End of Course related activities selection with optgroups  ======*/
-					  /*======================================================
-					  =            Course related users selection            =
-					  ======================================================*/
-					  $.each(response.users, function(key, val){
-				  			$('<option value='+ key +'>'+ val +'</option>').appendTo($("#menuuser"));
-					  });
-					  /*=====  End of Course related users selection  ======*/
 					  
 					  /*----------  Destroy and reintialize select2  ----------*/
 					  $(FILTER.MODULE).select2("destroy").select2();
-					  $(FILTER.USER).select2("destroy").select2();
 					});
                 }
             });
