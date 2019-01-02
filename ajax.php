@@ -25,17 +25,27 @@ define('AJAX_SCRIPT', true);
 require_once('../../config.php');
 
 require_login();
-
 $courseid  = optional_param('courseid', 1, PARAM_INT);// Course ID.
+
+// Get course details.
+$course = null;
+if ($courseid) {
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+    require_login($course);
+    $context = context_course::instance($course->id);
+} else {
+    require_login();
+    $context = context_system::instance();
+    $PAGE->set_context($context);
+}
+
+require_capability('report/log:view', $context);
 
 $reportlog = new report_log_renderable('logstore_standard', $courseid);
 $reportlog->showusers = true;
 
-$groups = $reportlog->get_group_list();
-$users = $reportlog->get_user_list();
 $activities = $reportlog->get_activities_list();
 
 echo json_encode([ 'activities' => $activities]);
-// echo json_encode(compact('groups', 'users', 'activities'));
 
 die();
