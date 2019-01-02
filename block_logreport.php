@@ -30,15 +30,17 @@ class block_logreport extends block_base {
 
     public function get_content() {
         global $CFG;
+        if ($this->content !== null) {
+            return $this->content;
+        }
+        
         $this->page->requires->css('/blocks/logreport/style/datatables.min.css');
         $this->page->requires->css('/blocks/logreport/style/select2.min.css');
         $this->page->requires->jquery_plugin('ui-css');
         $this->page->requires->js_call_amd('block_logreport/logreport', 'Init');
         $this->page->requires->js_call_amd('block_logreport/logreport', 'ProcessFilter');
         $this->page->requires->js_call_amd('block_logreport/logreport', 'InitDatatable');
-        if ($this->content !== null) {
-            return $this->content;
-        }
+        
         $output = $this->page->get_renderer('block_logreport');
 
         $this->content = new stdClass;
