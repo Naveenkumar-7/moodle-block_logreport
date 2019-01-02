@@ -43,7 +43,6 @@ $origin      = optional_param('origin', '', PARAM_TEXT); // Event origin.
 $draw = optional_param('draw',  0,  PARAM_INT);
 $start = optional_param('start',  0,  PARAM_INT);
 $length = optional_param('length',  10,  PARAM_INT);
-$search = optional_param('search[value]', '', PARAM_RAW);
 
 // Get course details.
 $course = null;
@@ -83,9 +82,8 @@ if ('site_errors' === $modid) {
 $tablelog = new \block_logreport\dataprovider('report_log', $filter);
 $tablelog->currpage = $start / $length;
 $tablelog->pagesize = $length;
-$tablelog->search = $search;
 
-$tablelog->query_db($length, $search['value']);
+$tablelog->query_db($length);
 $formattedrow = array();
 $tablelog->define_columns(array('time', 'fullnameuser', 'relatedfullnameuser', 'context', 'component',
         'eventname', 'description', 'origin', 'ip'));
