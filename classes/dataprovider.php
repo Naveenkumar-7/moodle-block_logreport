@@ -35,8 +35,6 @@ use report_log_table_log;
  */
 class dataprovider extends report_log_table_log {
 
-    public $search;
-
     public function __construct($uniqueid = 'report_log', $filterparams = null) {
         parent::__construct($uniqueid, $filterparams);
         $this->filterparams = $filterparams;
@@ -131,9 +129,6 @@ class dataprovider extends report_log_table_log {
         if (!($this->filterparams->logreader instanceof logstore_legacy\log\store)) {
             // Filter out anonymous actions, this is N/A for legacy log because it never stores them.
             $joins[] = "anonymous = 0";
-        }
-        if ($this->search != '') {
-            $joins[] = " eventname like '%$this->search%'";
         }
 
         $selector = implode(' AND ', $joins);
