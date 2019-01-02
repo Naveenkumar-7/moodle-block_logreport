@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>amd/src/datatables.js</location>
+        <name>DataTables</name>
+        <version>1.10.16</version>
+        <license>MIT</license>
+        <licenseversion></licenseversion>
+    </library>
+    <library>
+        <location>amd/src/select2.js</location>
+        <name>Select2</name>
+        <version>4.0.3</version>
+        <license>MIT</license>
+        <licenseversion></licenseversion>
+    </library>
+</libraries>
