@@ -31,3 +31,4 @@ $string['viewreport'] = 'View report';
 $string['clear'] = 'Reset';
 $string['logreport:addinstance'] = 'Add log report block';
 $string['logreport:myaddinstance'] = 'Add the block to my dashboard';
+$string['privacy:metadata'] = 'The Log report block only displays existing log data.';
