@@ -5,9 +5,9 @@
 .block_logreport #viewreport{
     float: right;
 }
-page-blocks-logreport-index form.logselecform {
+#page-blocks-logreport-index form.logselecform {
     margin-bottom: 10px;
 }
-page-blocks-logreport-index .dataTables_length select {
+#page-blocks-logreport-index .dataTables_length select {
     padding: 5px;
 }
