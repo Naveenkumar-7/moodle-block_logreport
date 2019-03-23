@@ -24,7 +24,7 @@
 define('AJAX_SCRIPT', true);
 require_once('../../config.php');
 global $CFG, $PAGE,$DB;
-$PAGE->set_context(context_system::instance());
+
 require_once($CFG->dirroot.'/lib/tablelib.php');
 
 $id          = optional_param('id', 0, PARAM_INT);// Course ID.
@@ -49,9 +49,14 @@ $course = null;
 if ($id) {
     $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
     require_login($course);
+    $context = context_course::instance($course->id);
 } else {
     require_login();
+    $context = context_system::instance();
+    $PAGE->set_context($context);
 }
+
+require_capability('report/log:view', $context);
 
 $reportlog = new report_log_renderable($logreader, $course, $user, $modid, $modaction, $group, $edulevel, $showcourses, $showusers,
         $chooselog, true, $url, $date, $logformat, $page, $perpage, 'timecreated DESC', $origin);
