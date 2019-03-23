@@ -168,7 +168,6 @@ class renderer extends plugin_renderer_base {
     }
     public function charts(){
         global $CFG;
-        if($CFG->dbtype == 'mysqli'){
             $tabsdata = (new \block_logreport\dataprovider)->generate_graphdata();
             foreach ($tabsdata as $key => $tab) {
                 $chart = new \core\chart_line();
@@ -183,6 +182,5 @@ class renderer extends plugin_renderer_base {
             $data = ['tabs' => $tabs];
             $renderable = new \block_logreport\output\renderreport($data);
             return $this->render($renderable);
-        }
     }
 }
