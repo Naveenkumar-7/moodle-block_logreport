@@ -157,7 +157,7 @@ class dataprovider extends report_log_table_log {
         }
     }
 
-    public function get_hits($duration = 'weekly') {
+    public function get_hits_mysql($duration = 'weekly') {
         global $DB;
         $secondcolumn = ", COUNT(userid) AS 'Unique User Logins'";
         switch ($duration) {
@@ -189,11 +189,49 @@ class dataprovider extends report_log_table_log {
 
         return $hitreport;
     }
+    public function get_hits_pgsql($duration = 'weekly') {
+        global $DB;
+        $secondcolumn = ", COUNT(userid) AS \"Unique User Logins\"";
+        switch ($duration) {
+            case 'hourly':
+                $groupingsql = " GROUP BY TO_CHAR(to_timestamp(timecreated), 'hh12 AM') 
+                                 ORDER BY TO_CHAR(to_timestamp(timecreated), 'hh12 AM') ASC";
+                $selectsql = " TO_CHAR(to_timestamp(timecreated), 'hh12 AM') AS \"Day\" $secondcolumn";
+                $wheresql = " WHERE to_timestamp(timecreated) > NOW() - INTERVAL '24 Hours' ";
+            break;
+            case 'daily':
+                $groupingsql = " GROUP BY TO_CHAR(to_timestamp(timecreated), 'dd-MM-YYYY') 
+                                 ORDER BY TO_CHAR(to_timestamp(timecreated), 'dd-MM-YYYY') ASC";
+                $selectsql = " TO_CHAR(to_timestamp(timecreated), 'dd-MM-YYYY') AS \"Day\" $secondcolumn";
+                $wheresql = " WHERE to_timestamp(timecreated) > NOW() - INTERVAL '30 days' ";
+            break;
+            case 'monthly':
+                $groupingsql = " GROUP BY TO_CHAR(to_timestamp(timecreated), 'Mon YY') 
+                                 ORDER BY TO_CHAR(to_timestamp(timecreated), 'Mon YY') DESC";
+                $selectsql = " TO_CHAR(to_timestamp(timecreated), 'Mon YY') AS \"Day\" $secondcolumn";
+                $wheresql = " WHERE to_timestamp(timecreated) > NOW() - INTERVAL '365 days' ";
+            break;
+        }
+
+        $sql = "SELECT $selectsql
+                  FROM {logstore_standard_log}
+                        $wheresql
+                        $groupingsql";
+
+        $hitreport = $DB->get_records_sql_menu($sql);
+
+        return $hitreport;
+    }
 
     public function generate_graphdata() {
+        global $CFG;
         $formats = [ 'hourly', 'daily', 'monthly'];
         foreach ($formats as $format) {
-            $chartdata[$format] = $this->get_hits($format);
+            if($CFG->dbtype == 'mysqli'){
+                $chartdata[$format] = $this->get_hits_mysql($format);
+            }elseif($CFG->dbtype == 'pgsql'){
+                $chartdata[$format] = $this->get_hits_pgsql($format);
+            }
         }
         return $chartdata;
     }
