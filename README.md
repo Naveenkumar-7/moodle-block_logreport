@@ -18,6 +18,9 @@ This plugin compatible with below MOODLE versions.
 - v3.3
 - v3.4
 - v3.5
+- v3.6
+- v3.7
+- v3.8
 
 # Credits
 [Datatable](https://datatables.net/)
