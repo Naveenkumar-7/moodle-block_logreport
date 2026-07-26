@@ -1,13 +1,18 @@
 language: php
 
-sudo: true
+dist: focal
 
 addons:
-  firefox: "47.0.1"
-  postgresql: "9.4"
+  postgresql: "14"
   apt:
     packages:
-      - openjdk-8-jre-headless
+      - postgresql-14
+      - postgresql-client-14
+      - libonig5
+
+services:
+  - mysql
+  - docker
 
 cache:
   directories:
@@ -15,28 +20,24 @@ cache:
     - $HOME/.npm
 
 php:
- - 7.0
- - 7.1
+ - 7.4
+ - 8.1
+ - 8.3
 
 env:
  global:
-  - MOODLE_BRANCH=MOODLE_32_STABLE
-  - MOODLE_BRANCH=MOODLE_33_STABLE
-  - MOODLE_BRANCH=MOODLE_34_STABLE
-  - MOODLE_BRANCH=MOODLE_35_STABLE
-  - MOODLE_BRANCH=MOODLE_36_STABLE
-  - MOODLE_BRANCH=MOODLE_37_STABLE
-  - MOODLE_BRANCH=MOODLE_38_STABLE
+  - PGVER=14
+  - MOODLE_BRANCH=MOODLE_405_STABLE
  matrix:
   - DB=pgsql
   - DB=mysqli
 
 before_install:
+  - if [[ ${TRAVIS_PHP_VERSION:0:1} -gt 7 ]]; then pecl install xmlrpc-beta; fi
+  - echo 'max_input_vars=5000' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - phpenv config-rm xdebug.ini
-  - nvm install 8.9
-  - nvm use 8.9
   - cd ../..
-  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+  - composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^4
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
@@ -44,12 +45,12 @@ install:
 
 script:
   - moodle-plugin-ci phplint
-  - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
-  - moodle-plugin-ci codechecker
+  - moodle-plugin-ci phpcs --max-warnings 0
+  - moodle-plugin-ci phpdoc --max-warnings 0
   - moodle-plugin-ci validate
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
   - moodle-plugin-ci grunt
-  - moodle-plugin-ci phpunit
+  - moodle-plugin-ci phpunit --fail-on-warning
   - moodle-plugin-ci behat
