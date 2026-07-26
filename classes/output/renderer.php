@@ -44,7 +44,7 @@ class renderer extends plugin_renderer_base {
      */
     public function report_selector_form($reportlog) {
         $output = html_writer::start_tag('form', array('class' => 'logselecform', 'action' => $reportlog->url, 'method' => 'get'));
-        $output .= html_writer::start_div();
+        $output .= html_writer::start_div('d-flex flex-wrap align-items-center gap-2');
         $output .= html_writer::empty_tag('input', array('type' => 'hidden',
                                                          'name' => 'chooselog',
                                                          'value' => '1'));
@@ -157,12 +157,16 @@ class renderer extends plugin_renderer_base {
                 $output .= html_writer::select($readers, 'logreader', $reportlog->selectedlogreader, false,
                                                ['data-select2' => true]);
             }
+        }
+        $output .= html_writer::end_div();
+        if (!empty($readers)) {
+            $output .= html_writer::start_div('mt-2');
             $output .= html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('clear', 'block_logreport'),
             'class' => 'btn btn-secondary', 'id' => 'lr_clearfilter'));
             $output .= html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('gettheselogs'),
             'class' => 'btn btn-primary'));
+            $output .= html_writer::end_div();
         }
-        $output .= html_writer::end_div();
         $output .= html_writer::end_tag('form');
         return $output;
     }
@@ -176,6 +180,7 @@ class renderer extends plugin_renderer_base {
                 $chart->set_labels(array_keys($tab));
                 $tabs[] = ['id' => $key,
                            'name' => get_string($key, 'block_logreport'),
+                           'active' => empty($tabs),
                            'content' => html_writer::tag('div', $this->render_chart($chart, false),
                                                          ['class' => 'blocktimeline'])];
             }

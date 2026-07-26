@@ -137,7 +137,7 @@
  				})
  			}
  			$('.generaltable[data-datatable=true]').DataTable({
- 				"dom":'<l<t>ip>',
+ 				"dom":'<"mt-1"p>t',
  				"ordering": false,
  				"processing": true,
 		        "serverSide": true,
@@ -145,7 +145,29 @@
 		        	type: "POST",
 		        	url: M.cfg.wwwroot+"/blocks/logreport/server_processing.php",
 		        	data: params
-		        } 
+		        },
+		        "drawCallback": function() {
+		        	var wrapper = $(this.api().table().container());
+		        	var paginate = wrapper.find('.dataTables_paginate');
+		        	paginate.addClass('pagination pagination-centered justify-content-center');
+		        	paginate.find('a.paginate_button').each(function() {
+		        		var button = $(this).addClass('page-link');
+		        		var li = $('<li class="page-item"></li>');
+		        		if (button.hasClass('current')) {
+		        			li.addClass('active');
+		        		}
+		        		if (button.hasClass('disabled')) {
+		        			li.addClass('disabled');
+		        		}
+		        		button.before(li);
+		        		li.append(button);
+		        	});
+		        	paginate.find('span').each(function() {
+		        		if ($(this).children('li.page-item').length) {
+		        			$(this).replaceWith($(this).contents());
+		        		}
+		        	});
+		        }
  			});
  		}
  	}

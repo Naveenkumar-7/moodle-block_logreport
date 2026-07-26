@@ -58,8 +58,13 @@ if ($id) {
 
 require_capability('report/log:view', $context);
 
+$url     = new moodle_url($PAGE->url);
+$page    = (int)($start / $length);
+$perpage = $length;
+$order   = 'timecreated DESC';
+
 $reportlog = new report_log_renderable($logreader, $course, $user, $modid, $modaction, $group, $edulevel, $showcourses, $showusers,
-        $chooselog, true, $url, $date, $logformat, $page, $perpage, 'timecreated DESC', $origin);
+        $chooselog, true, $url, $date, $logformat, $page, $perpage, $order, $origin);
 $readers = $reportlog->get_readers();
 $filter = new stdClass;
 

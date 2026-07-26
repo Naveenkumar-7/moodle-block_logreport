@@ -41,8 +41,6 @@ $PAGE->set_heading($title);
 $PAGE->set_cacheable(true);
 
 
-$PAGE->requires->jquery_plugin('ui-css');
-$PAGE->requires->css('/blocks/logreport/style/jquery.dataTables.min.css');
 $PAGE->requires->css('/blocks/logreport/style/select2.min.css');
 
 $PAGE->requires->js_call_amd('block_logreport/logreport', 'Init');

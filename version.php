@@ -26,5 +26,5 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->component = 'block_logreport';
 $plugin->requires = 2016120509;
 $plugin->maturity   = MATURITY_STABLE;
-$plugin->release    = '3.8.1';
-$plugin->version = 2020022400;
+$plugin->release    = '3.8.1 (compat 5.3dev)';
+$plugin->version = 2026072106;

@@ -1,5 +1,5 @@
 <?php
-namespace block_calendar_month\privacy;
+namespace block_logreport\privacy;
  
 class provider implements
     // This plugin does not store any personal user data.
